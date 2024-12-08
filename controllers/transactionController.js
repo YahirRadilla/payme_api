@@ -27,15 +27,14 @@ export const getTransactions = async (req, res) => {
         const [rows] = await db.execute(query, [id])
 
         res.json({
-            data: rows,
-            status: 200
+            data: rows
         })
     } catch (error) {
         console.error(error)
         res.status(500).json({
-            error: 'Internal server error',
-            status: 500
-        })
+            success: false,
+            message: "Internal server error",
+        });
     } finally {
         if (db) db.end()
     }
