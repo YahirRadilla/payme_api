@@ -1,5 +1,4 @@
 import { connect } from '../db.js'
-import crypto from 'crypto'
 
 
 export const getPayments = async (req, res) => {
@@ -10,13 +9,15 @@ export const getPayments = async (req, res) => {
         const query = 'SELECT * FROM payment_view WHERE user_id = ?;'
         const [rows] = await db.execute(query, [id])
 
-        res.json({
-            data: rows,
-            status: 200
+        res.status(200).json({
+            data: rows
         })
 
     } catch (error) {
-        console.log(error)
+        res.status(500).json({
+            success: false,
+            message: "Internal server error",
+        });
     } finally {
         if (db)
             db.end()
@@ -27,19 +28,32 @@ export const postPayment = async (req, res) => {
     let db
     const id = req.params.id
     const { sourceCard, serviceName, reference, amount } = req.body
-    const folio = crypto.randomBytes(15).toString('hex').substring(0, 20);
     try {
         db = await connect()
-        const query = 'CALL SP_CREATE_SERVICE_PAYMENT(?,?,?,?,?,?);'
-        const [rows] = await db.execute(query, [id, folio, sourceCard, serviceName, reference, amount])
+        const query = 'CALL SP_CREATE_SERVICE_PAYMENT(?,?,?,?,?);'
+        const [rows] = await db.execute(query, [id, sourceCard, serviceName, reference, amount])
 
-        res.json({
+        res.status(201).json({
+            success: true,
+            message: "Your payment was successful",
             data: rows,
-            status: 200
         })
 
+
     } catch (error) {
-        console.log(error)
+        if (error.message.includes('service')) {
+            res.status(400).json({
+                success: false,
+                message: error.message,
+            });
+        }
+
+        if (error.message.includes('0 or less')) {
+            res.status(400).json({
+                success: false,
+                message: error.message,
+            });
+        }
     } finally {
         if (db)
             db.end()

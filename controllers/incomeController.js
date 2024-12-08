@@ -1,5 +1,4 @@
 import { connect } from '../db.js'
-import crypto from 'crypto'
 
 export const getTotalIncomes = async (req, res) => {
     let db
