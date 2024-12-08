@@ -8,6 +8,7 @@ const corsOptions = {
     origin: ORIGIN_URL,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
+
 };
 
 const app = express()

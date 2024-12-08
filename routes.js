@@ -12,6 +12,7 @@ import { getTransactions } from './controllers/transactionController.js'
 import { getTotalTransfers, getTransfers, postTransfer } from './controllers/transferController.js'
 import { getPayments, postPayment } from './controllers/paymentController.js'
 import { getTotalWithdrawals, getWithdrawals, postWithdrawal } from './controllers/withdrawalController.js'
+import { authVerify } from './middleware/authVerify.js'
 
 export const router = express.Router()
 
@@ -23,32 +24,32 @@ router.post('/register', postRegister)
 
 router.post('/verify-token', postVerifyToken);
 
-router.get('/user/:id', getUser)
+router.get('/user/:id', authVerify, getUser)
 
-router.get('/transfers/:id', getTransfers)
+router.get('/transfers/:id', authVerify, getTransfers)
 
-router.get('/cards/:id', getCards)
+router.get('/cards/:id', authVerify, getCards)
 
-router.get('/transfers/total/:id', getTotalTransfers)
+router.get('/transfers/total/:id', authVerify, getTotalTransfers)
 
-router.get('/income/total/:id', getTotalIncomes)
+router.get('/income/total/:id', authVerify, getTotalIncomes)
 
-router.get('/withdrawal/total/:id', getTotalWithdrawals)
+router.get('/withdrawal/total/:id', authVerify, getTotalWithdrawals)
 
-router.get('/payments/:id', getPayments)
+router.get('/payments/:id', authVerify, getPayments)
 
-router.get('/incomes/:id', getIncomes)
+router.get('/incomes/:id', authVerify, getIncomes)
 
-router.get('/withdrawal/:id', getWithdrawals)
+router.get('/withdrawal/:id', authVerify, getWithdrawals)
 
-router.get('/transactions/:id', getTransactions)
+router.get('/transactions/:id', authVerify, getTransactions)
 
-router.post('/card/create/:id', postCard)
+router.post('/card/create/:id', authVerify, postCard)
 
-router.post('/transfers/create/:id', postTransfer)
+router.post('/transfers/create/:id', authVerify, postTransfer)
 
-router.post('/payments/create/:id', postPayment)
+router.post('/payments/create/:id', authVerify, postPayment)
 
-router.post('/incomes/create/:id', postIncome)
+router.post('/incomes/create/:id', authVerify, postIncome)
 
-router.post('/withdrawal/create/:id', postWithdrawal)
+router.post('/withdrawal/create/:id', authVerify, postWithdrawal)
