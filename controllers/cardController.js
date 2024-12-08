@@ -35,9 +35,10 @@ export const postCard = async (req, res) => {
         const query = 'CALL SP_CREATE_USER_CARD(?,?,?,?,?);'
         const [rows] = await db.execute(query, [id, cardNumber, expirationDate, cvv, balance])
 
-        res.json({
+        res.status(201).json({
+            success: true,
+            message: "Card successfully registered",
             data: rows,
-            status: 200
         })
 
     } catch (error) {
