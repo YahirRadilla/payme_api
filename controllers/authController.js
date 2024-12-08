@@ -32,7 +32,7 @@ export const postLogin = async (req, res) => {
             }).status(200).json({
                 success: true,
                 message: "Authentication successful",
-                data: { ...rowsUserExist, id: id, email: dbEmail },
+                data: { id: id, email: dbEmail },
             });
 
 
