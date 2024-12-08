@@ -10,13 +10,16 @@ export const getUser = async (req, res) => {
         const query = 'SELECT id,first_name, first_lastname, phone,email,created_at FROM users WHERE id = ?;'
         const [rows] = await db.execute(query, [id])
 
-        res.json({
-            data: rows,
-            status: 200
+        res.status(200).json({
+            success: true,
+            data: rows
         })
 
     } catch (error) {
-        console.log(error)
+        res.status(500).json({
+            success: false,
+            message: "Internal server error",
+        });
     } finally {
         if (db)
             db.end()
