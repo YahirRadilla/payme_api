@@ -10,6 +10,7 @@ export const getPayments = async (req, res) => {
         const [rows] = await db.execute(query, [id])
 
         res.status(200).json({
+            success: true,
             data: rows
         })
 

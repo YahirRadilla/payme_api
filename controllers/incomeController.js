@@ -9,6 +9,7 @@ export const getTotalIncomes = async (req, res) => {
         const [rows] = await db.execute(query, [id])
         const totalData = rows[0].totalIncomes === null ? { totalIncomes: '0.00' } : rows[0]
         res.status(200).json({
+            success: true,
             data: totalData,
         })
 
@@ -32,6 +33,7 @@ export const getIncomes = async (req, res) => {
         const [rows] = await db.execute(query, [id])
 
         res.status(200).json({
+            success: true,
             data: rows,
         })
 

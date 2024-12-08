@@ -27,6 +27,7 @@ export const getTransactions = async (req, res) => {
         const [rows] = await db.execute(query, [id])
 
         res.json({
+            success: true,
             data: rows
         })
     } catch (error) {
