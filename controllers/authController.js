@@ -30,24 +30,24 @@ export const postLogin = async (req, res) => {
                 sameSite: 'strict',
                 maxAge: 1000 * 60 * 60
             }).status(200).json({
-                data: { id: id, email: dbEmail },
+                success: true,
                 message: "Authentication successful",
-                status: 200,
+                data: { ...rowsUserExist, id: id, email: dbEmail },
             });
 
 
     } catch (err) {
         if (err.message.includes('not found')) {
             res.status(404).json({
+                success: false,
                 message: err.message,
-                status: 404,
             });
         }
 
         if (err.message.includes('password')) {
             res.status(401).json({
+                success: true,
                 message: err.message,
-                status: 401,
             });
         }
     }
@@ -91,17 +91,23 @@ export const postRegister = async (req, res) => {
         const query = `CALL SP_CREATE_USER(?,?,?,?,?);`
         const [rows] = await db.execute(query, [firstName, firtsLastname, phone, email, hashedPassword])
 
-
+        console.log(rows)
         res.status(201).json({
             message: "User created successfully",
             status: 201,
             data: rows
         });
     } catch (error) {
-        console.log(error)
         if (error.message.includes('already exists')) {
             return res.status(409).json({
-                message: "User already exists",
+                message: "Email already registered",
+                status: 409
+            });
+        }
+
+        if (error.message.includes('phone')) {
+            return res.status(409).json({
+                message: "Phone already registered",
                 status: 409
             });
         }
