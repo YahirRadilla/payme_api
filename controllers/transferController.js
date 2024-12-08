@@ -1,5 +1,4 @@
 import { connect } from '../db.js'
-import crypto from 'crypto'
 
 
 export const getTransfers = async (req, res) => {
@@ -35,7 +34,6 @@ export const getTotalTransfers = async (req, res) => {
         db = await connect()
         const query = `SELECT SUM(amount) as totalTransfers FROM transfers WHERE sender_id = ?;`
         const [rows] = await db.execute(query, [id])
-
         const totalData = rows[0].totalTransfers === null ? { totalTransfers: '0.00' } : rows[0]
 
         res.status(200).json({
@@ -63,9 +61,10 @@ export const postTransfer = async (req, res) => {
         const query = 'CALL SP_CREATE_TRANSFER(?,?,?,?,?);'
         const [rows] = await db.execute(query, [id, recipientEmail, sourceCard, amount, message])
 
-        res.json({
+        res.status(201).json({
+            success: true,
+            message: "Your transfer was successful",
             data: rows,
-            status: 200
         })
 
     } catch (error) {
