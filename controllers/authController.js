@@ -31,7 +31,7 @@ export const postLogin = async (req, res) => {
                 maxAge: 1000 * 60 * 60
             }).status(200).json({
                 success: true,
-                message: "Authentication successful",
+                message: "Authentication successfull",
                 data: { id: id, email: dbEmail },
             });
 
@@ -91,22 +91,26 @@ export const postRegister = async (req, res) => {
         const query = `CALL SP_CREATE_USER(?,?,?,?,?);`
         const [rows] = await db.execute(query, [firstName, firtsLastname, phone, email, hashedPassword])
 
+
+
         console.log(rows)
         res.status(201).json({
+            success: true,
             message: "User created successfully",
-            status: 201,
             data: rows
         });
     } catch (error) {
         if (error.message.includes('already exists')) {
-            return res.status(409).json({
+            res.status(409).json({
+                success: false,
                 message: "Email already registered",
                 status: 409
             });
         }
 
         if (error.message.includes('phone')) {
-            return res.status(409).json({
+            res.status(409).json({
+                success: false,
                 message: "Phone already registered",
                 status: 409
             });

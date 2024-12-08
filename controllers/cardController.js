@@ -9,12 +9,17 @@ export const getCards = async (req, res) => {
         const [rows] = await db.execute(query, [id])
 
         res.json({
+            success: true,
+            message: "Authentication successful",
             data: rows,
-            status: 200
         })
 
     } catch (error) {
-        console.log(error)
+        res.status(500).json({
+            success: false,
+            message: "Internal server error",
+        });
+
     } finally {
         if (db)
             db.end()
@@ -36,7 +41,12 @@ export const postCard = async (req, res) => {
         })
 
     } catch (error) {
-        console.log(error)
+        if (error.message.includes('card_number')) {
+            res.status(409).json({
+                success: false,
+                message: "card already registered",
+            });
+        }
     } finally {
         if (db)
             db.end()
