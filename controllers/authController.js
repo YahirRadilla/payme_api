@@ -46,7 +46,7 @@ export const postLogin = async (req, res) => {
 
         if (err.message.includes('password')) {
             res.status(401).json({
-                success: true,
+                success: false,
                 message: err.message,
             });
         }
