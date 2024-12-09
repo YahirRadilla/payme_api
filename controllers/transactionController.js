@@ -10,7 +10,8 @@ export const getTransactions = async (req, res) => {
             SELECT 
                 t.*, 
                 sc.card_number AS source_card,
-                dc.card_number AS destination_card
+                dc.card_number AS destination_card,
+                DATE(t.created_at) AS created_at
             FROM 
                 transactions t
             LEFT JOIN 
@@ -26,7 +27,7 @@ export const getTransactions = async (req, res) => {
         `;
         const [rows] = await db.execute(query, [id])
 
-        res.json({
+        res.status(200).json({
             success: true,
             data: rows
         })
@@ -42,27 +43,62 @@ export const getTransactions = async (req, res) => {
 }
 
 
-/* app.get('/filterDate', async (req, res) => {
-    let db
+export const getTransactionsFilter = async (req, res) => {
+    let db;
+    const id = req.params.id;
+    const dateTransaction = req.query.dateTransaction || null;
+    const type = req.query.type || null;
+
+    const formattedDate = dateTransaction
+        ? new Date(dateTransaction).toISOString().split('T')[0]
+        : null;
+
     try {
-        const { dateTransaction } = req.body
+        db = await connect();
+        const query = `
+            SELECT 
+                t.*, 
+                sc.card_number AS source_card,
+                dc.card_number AS destination_card,
+                DATE(t.created_at) AS created_at
+            FROM 
+                transactions t
+            LEFT JOIN 
+                user_cards sc 
+            ON 
+                t.source_card_id = sc.id
+            LEFT JOIN 
+                user_cards dc 
+            ON 
+                t.destination_card_id = dc.id
+            WHERE 
+                t.user_id = ?
+                AND (? IS NULL OR DATE(t.created_at) = ?)
+                AND (? IS NULL OR t.type = ?);
+        `;
+        const [rows] = await db.execute(query, [
+            id,
+            formattedDate,
+            formattedDate,
+            type,
+            type,
+        ]);
 
-        db = await connect()
-        const query = `CALL SP_FILTER_DATE(?);`
-        const [rows] = await db.execute(query, [dateTransaction])
-
-        res.json({
+        res.status(200).json({
+            success: true,
             data: rows,
-            status: 200
-        })
-
+        });
     } catch (error) {
-        console.log(error)
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message: 'Internal server error',
+        });
     } finally {
-        if (db)
-            db.end()
+        if (db) db.end();
     }
-}) */
+};
+
 
 
 

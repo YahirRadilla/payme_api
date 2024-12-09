@@ -8,7 +8,7 @@ import {
 import { getUser, patchUserInfo, patchUserPassword, patchDeactivateUser } from './controllers/userController.js'
 import { getCards, postCard } from './controllers/cardController.js'
 import { getIncomes, getTotalIncomes, postIncome } from './controllers/incomeController.js'
-import { getTransactions } from './controllers/transactionController.js'
+import { getTransactions, getTransactionsFilter } from './controllers/transactionController.js'
 import { getTotalTransfers, getTransfers, postTransfer } from './controllers/transferController.js'
 import { getPayments, postPayment } from './controllers/paymentController.js'
 import { getTotalWithdrawals, getWithdrawals, postWithdrawal } from './controllers/withdrawalController.js'
@@ -29,8 +29,8 @@ router.get('/user/:id', authVerify, getUser)
 router.patch('/user/update/:id', authVerify, patchUserInfo)
 
 router.patch('/user/update/password/:id', authVerify, patchUserPassword)
-//TODO
-router.patch('/user/deactivate/:id', patchDeactivateUser)
+
+router.patch('/user/deactivate/:id', authVerify, patchDeactivateUser)
 
 router.get('/transfers/:id', authVerify, getTransfers)
 
@@ -49,6 +49,8 @@ router.get('/incomes/:id', authVerify, getIncomes)
 router.get('/withdrawal/:id', authVerify, getWithdrawals)
 
 router.get('/transactions/:id', authVerify, getTransactions)
+
+router.get('/transactions/filter/:id', authVerify, getTransactionsFilter)
 
 router.post('/card/create/:id', authVerify, postCard)
 
