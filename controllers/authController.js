@@ -56,7 +56,6 @@ export const postLogin = async (req, res) => {
 
 export const postLogout = async (req, res) => {
     res
-        .clearCookie('userName')
         .clearCookie('access_token')
         .json({ message: 'Logout successful' })
 }
