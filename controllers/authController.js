@@ -9,7 +9,7 @@ export const postLogin = async (req, res) => {
     let db
     try {
         db = await connect()
-        const queryUserExist = `SELECT id,email,password FROM users WHERE email = ?;`
+        const queryUserExist = `SELECT id,email,password FROM users WHERE email = ? AND active = 1;`
         const [rowsUserExist] = await db.execute(queryUserExist, [email])
 
         if (!rowsUserExist.length) throw new Error("User not found");

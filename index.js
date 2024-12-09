@@ -6,7 +6,7 @@ import { router } from './routes.js'
 
 const corsOptions = {
     origin: ORIGIN_URL,
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     credentials: true,
 
 };

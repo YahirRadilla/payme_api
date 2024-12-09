@@ -5,7 +5,7 @@ import {
     postRegister,
     postVerifyToken
 } from './controllers/authController.js'
-import { getUser } from './controllers/userController.js'
+import { getUser, patchUserInfo, patchUserPassword, patchDeactivateUser } from './controllers/userController.js'
 import { getCards, postCard } from './controllers/cardController.js'
 import { getIncomes, getTotalIncomes, postIncome } from './controllers/incomeController.js'
 import { getTransactions } from './controllers/transactionController.js'
@@ -24,37 +24,13 @@ router.post('/register', postRegister)
 
 router.post('/verify-token', postVerifyToken);
 
-router.get('/user/:id', getUser)
+router.get('/user/:id', authVerify, getUser)
 
-router.get('/transfers/:id', getTransfers)
+router.patch('/user/update/:id', authVerify, patchUserInfo)
 
-router.get('/cards/:id', getCards)
-
-router.get('/transfers/total/:id', getTotalTransfers)
-
-router.get('/income/total/:id', getTotalIncomes)
-
-router.get('/withdrawal/total/:id', getTotalWithdrawals)
-
-router.get('/payments/:id', getPayments)
-
-router.get('/incomes/:id', getIncomes)
-
-router.get('/withdrawal/:id', getWithdrawals)
-
-router.get('/transactions/:id', getTransactions)
-
-router.post('/card/create/:id', postCard)
-
-router.post('/transfers/create/:id', postTransfer)
-
-router.post('/payments/create/:id', postPayment)
-
-router.post('/incomes/create/:id', postIncome)
-
-router.post('/withdrawal/create/:id', postWithdrawal)
-
-/* router.get('/user/:id', authVerify, getUser)
+router.patch('/user/update/password/:id', authVerify, patchUserPassword)
+//TODO
+router.patch('/user/deactivate/:id', patchDeactivateUser)
 
 router.get('/transfers/:id', authVerify, getTransfers)
 
@@ -82,4 +58,4 @@ router.post('/payments/create/:id', authVerify, postPayment)
 
 router.post('/incomes/create/:id', authVerify, postIncome)
 
-router.post('/withdrawal/create/:id', authVerify, postWithdrawal) */
+router.post('/withdrawal/create/:id', authVerify, postWithdrawal) 
