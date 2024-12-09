@@ -27,7 +27,7 @@ export const postLogin = async (req, res) => {
             .cookie('access_token', token, {
                 httpOnly: true,
                 secure: 'production',
-                sameSite: 'lax',
+                sameSite: 'None',
                 maxAge: 1000 * 60 * 60
             }).status(200).json({
                 success: true,
