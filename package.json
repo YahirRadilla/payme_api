@@ -10,6 +10,9 @@
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.11.5"
   },
+  "optionalDependencies": {
+    "bcrypt": "^5.0.0"
+  },
   "scripts": {
     "dev": "node --watch index.js"
   }
