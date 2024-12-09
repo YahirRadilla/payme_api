@@ -56,9 +56,14 @@ export const postLogin = async (req, res) => {
 
 export const postLogout = async (req, res) => {
     res
-        .clearCookie('access_token')
-        .json({ message: 'Logout successful' })
-}
+        .clearCookie('access_token', {
+            httpOnly: true,
+            secure: 'production',
+            sameSite: 'None'
+        })
+        .status(200)
+        .json({ message: 'Logout successful' });
+};
 
 
 export const postVerifyToken = (req, res) => {
